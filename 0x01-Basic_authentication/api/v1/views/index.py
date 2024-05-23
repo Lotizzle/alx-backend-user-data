@@ -7,7 +7,7 @@ from api.v1.views import app_views
 app_views = Blueprint('app_views', __name__)
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
+@app_views.route('/api/v1/status', methods=['GET'], strict_slashes=False)
 def status() -> str:
     """ GET /api/v1/status
     Return:
@@ -28,7 +28,7 @@ def stats() -> str:
     return jsonify(stats)
 
 
-@app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
+@app_views.route('/api/v1/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized_route() -> str:
     """ GET /api/v1/unauthorized
     Return:
@@ -37,7 +37,7 @@ def unauthorized_route() -> str:
     abort(401)
 
 
-@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+@app_views.route('/api/v1/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden_route() -> str:
     """ GET /api/v1/forbidden
     Return:
