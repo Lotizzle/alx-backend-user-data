@@ -36,7 +36,7 @@ def unauthorized_route() -> str:
     """
     abort(401)
 
-@app_views.route('api/vi/forbidden', methods=['GET'], strict_slashes=False)
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden_route() -> str:
     """ GET /api/v1/forbidden
     Return:
