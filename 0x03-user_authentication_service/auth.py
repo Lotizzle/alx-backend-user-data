@@ -2,6 +2,7 @@
 """ Auth Module for hashing
 """
 
+import uuid
 from db import DB
 from user import User
 from typing import Optional
@@ -50,5 +51,9 @@ class Auth:
                     password.encode('utf-8'),
                     user.hashed_password.encode('utf-8')
             )
-        except Exception:
+        except NoResultFound:
             return False
+
+    def _generate_uuid(self) -> str:
+        """Generate a new UUID."""
+        return str(uuid.uuid4())
