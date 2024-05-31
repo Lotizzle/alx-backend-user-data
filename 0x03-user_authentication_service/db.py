@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DB module that adds users
+DB module
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -60,6 +60,6 @@ class DB:
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(user, key):
-                raise ValueError(f"Attribute {key} does not exist on User")
+                raise ValueError
             setattr(user, key, value)
         self._session.commit()
