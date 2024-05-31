@@ -25,7 +25,7 @@ class Auth:
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
         return hashed_password
-    
+
     def register_user(self, email: str, password: str) -> User:
         """
         Registers a new user with the given email and password.
