@@ -49,10 +49,10 @@ class DB:
             if user is None:
                 raise NoResultFound
             return user
-        except NoResultFound:
-            raise NoResultFound("No user found with the given arguments")
-        except InvalidRequestError:
-            raise InvalidRequestError("Invalid query arguments provided")
+        except NoResultFound as e:
+            raise NoResultFound("No user found with the given arguments") from e
+        except InvalidRequestError as e:
+            raise InvalidRequestError("Invalid query arguments provided") from e
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user's attributes
