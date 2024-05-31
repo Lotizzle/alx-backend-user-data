@@ -60,6 +60,6 @@ class DB:
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(user, key):
-                raise ValueError
+                raise ValueError(f"Attribute {key} does not exist on User")
             setattr(user, key, value)
         self._session.commit()
