@@ -7,7 +7,6 @@ from typing import TypeVar
 from models.user import User
 
 
-
 class BasicAuth(Auth):
     """
     BasicAuth class
@@ -53,19 +52,20 @@ class BasicAuth(Auth):
         user_credentials = decoded_base64_authorization_header.split(':', 1)
         return user_credentials[0], user_credentials[1]
 
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
         """Returns the User instance based on email and password"""
         if user_email is None or not isinstance(user_email, str):
             return None
         if user_pwd is None or not isinstance(user_pwd, str):
             return None
-        
+
         users = User.search({'email': user_email})
         if not users:
             return None
-        
+
         user = users[0]
         if not user.is_valid_password(user_pwd):
             return None
-        
+
         return user
