@@ -37,8 +37,8 @@ def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """Returns the log message obfuscated based on the provided fields."""
     for field in fields:
-        message = re.sub(fr'{field}=[^{separator}]*',
-                         f'{field}={redaction}', message)
+        message = re.sub(rf"{field}=.*?{separator}",
+                         f"{field}={redaction}{separator}", message)
     return message
 
 
@@ -58,14 +58,31 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> connection.MySQLConnection:
     """Returns a MySQL database connection"""
-    db_username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    db_password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    db_host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
-
     return mysql.connector.connect(
-        user=db_username,
-        password=db_password,
-        host=db_host,
-        database=db_name
+        host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        user=os.getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=os.getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        database=os.getenv("PERSONAL_DATA_DB_NAME")
     )
+
+
+def main() -> None:
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+    logger = get_logger()
+
+    for row in cursor:
+        message = (
+            f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; password={row[4]}; "
+            f"ip={row[5]}; last_login={row[6]}; user_agent={row[7]};"
+        )
+        logger.info(message)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
